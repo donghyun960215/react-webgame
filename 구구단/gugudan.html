@@ -15,6 +15,7 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
   'use strict';
+  // class에서 state 선언하는 방법
   class GuGuDan extends React.Component {
     // constructor(props) {
     //   super(props);
@@ -31,36 +32,46 @@
         value: '',
         result: '',
       };
-
+    
+    // 받은값 계산하기
     onSubmit = (e) => {
             e.preventDefault();
             if(parseInt(this.state.value) === this.state.first * this.state.second){
-              this.setState({
-                //result: '정답',
-                //result: '정답: ' + this.state.value,
-                result: `정답 : ${this.state.value}`,
-                first: Math.ceil(Math.random() * 9),
-                second: Math.ceil(Math.random() * 9),
-                value: ''
+              this.setState((prevState) => {   //prevState 예전상태값
+                return {
+                  //result: '정답',
+                  //result: `정답 : ${this.state.value}`,
+                  result: '정답: ' + prevState.value,
+                  first: Math.ceil(Math.random() * 9),
+                  second: Math.ceil(Math.random() * 9),
+                  value: ''
+                };
               });
+              this.input.focus();
             }else {
               this.setState({
                 result: '땡',
                 value: ''
               });
             }
+            this.input.focus();
           };
 
+    // value 값 받기
     onChange = (e) => {
       this.setState({ value: e.target.value});
     };
     
+    //input 포커스 방식
+    input;
+    onRefInput = (c) => {this.input = c;}
+
     render() {
       return(
         <>
           <div>{this.state.first} 곱하기 {this.state.second}는?</div>
           <form onSubmit = {this.onSubmit}>
-            <input type="number" value = {this.state.value} onChange = {this.onChange} />
+            <input ref={this.onRefInput} type="number" value = {this.state.value} onChange = {this.onChange} />
             <button>입력!</button>
           </form>
           <div>{this.state.result}</div>
