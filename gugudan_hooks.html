@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>구구단</title>
+</head>
+<body>
+<div id="root"></div>
+<script src="./dist/app.js"></script>
+<script>
+  'use strict';
+  const GuGuDan = () => {
+    // Hooks에서 state 선언하는 방법
+    const [first, setFirst] = React.useState(Math.ceil(Math.random() * 9));
+    const [second, setSecond] = React.useState(Math.ceil(Math.random() * 9));
+    const [value, setValue] = React.useState('');
+    const [result, setResult] = React.useState('');
+    const inputRef = React.useRef(null);   // focus 설정하기
+
+    // value 값 받기
+    const onChangeInput = (e) => {
+      setValue(e.target.value);
+    };
+
+    //받은값 계산하기
+    const onSubmitForm = (e) => {
+      e.preventDefault();
+      if(parseInt(value) === first * second){
+        setResult('정답: ' + value);
+        setFirst(Math.ceil(Math.random() * 9));
+        setSecond(Math.ceil(Math.random() * 9));
+        setValue('');
+        inputRef.current.focus();  // focus 사용시 기존 방식과 다르게 current를 입력해줘야 한다.
+      }else {
+        setResult('떙');
+        setValue('');
+        inputRef.current.focus();
+      }
+    }
+
+    return (
+      <>
+        <div>{first} 곱하기 {second}는?</div>
+        <form onSubmit={onSubmitForm}>
+          <input ref={inputRef} type="number" onChange={onChangeInput} value={value} />
+          <button>입력!</button>  
+        </form>
+        <div id="result">{result}</div>
+      </>
+    );
+  }
+
+</script>
+<script>
+  //ReactDOM.render(<GuGuDan />, document.querySelector('#root')); //17버전 react
+  ReactDOM.createRoot(document.querySelector('#root')).render(<GuGuDan />); //18버전 react
+</script>
+</body>
+</html>
