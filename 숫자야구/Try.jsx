@@ -1,21 +1,23 @@
-import React,{ Component } from 'react';
+import React from 'react';
 
+const Try = ({tryInfo}) => { //props 구조분해 방식
+  return(
+    <li>
+      <div>{tryInfo.try}</div>
+      <div>{tryInfo.result}</div>
+    </li>
+  )
+};
 
-class Try extends Component {
-
-  
-  render() {
-    return(
-      <li>
-        <b>{this.props.v.fruit}</b> - {this.props.i}
-        <div>컨텐츠1</div>
-        <div>컨텐츠2</div>
-        <div>컨텐츠3</div>
-        <div>컨텐츠4</div>
-        <div>컨텐츠5</div>
-      </li>
-    );
-  }
-}
+// class Try extends Component {  
+//   render() {
+//     return(
+//       <li>
+//         <div>{this.props.tryInfo.try}</div>
+//         <div>{this.props.tryInfo.result}</div>
+//       </li>
+//     );
+//   }
+// }
 
 export default Try;
