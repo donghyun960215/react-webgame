@@ -41,6 +41,7 @@ const NumberBaseball = () => {
         setValue('');
         setAnswer(getNumbers());
         setTries([]);
+        inputEl.current.focus();
       }else { // 10번 이하일 때
         for(let i = 0; i < 4; i += 1){
           if(answerArray[i] === answer[i]){
@@ -54,6 +55,7 @@ const NumberBaseball = () => {
         });
         setValue('');
       }
+      inputEl.current.focus();
     }
   };
 

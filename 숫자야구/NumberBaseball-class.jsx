@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import Try from './Try';
 
 function getNumbers() { //숫자 4개를 겹차자 얺고 랜덤하게 뽑는 함수
@@ -34,6 +34,9 @@ class NumberBaseball extends Component  {
         answer: getNumbers(),
         tries:[]
       });
+      //기존 inputRef focus방식
+      //this.onRefInput.focus();
+      this.onRefInput.current.focus();
     }else { //답이 틀렸으면
       const answerArray = this.state.value.split('').map((v) => parseInt(v));
       let strike = 0;
@@ -48,6 +51,7 @@ class NumberBaseball extends Component  {
           answer: getNumbers(),
           tries:[]
         });
+        this.onRefInput.current.focus();
       }else { // 10번 이하일 때
         for(let i = 0; i < 4; i += 1){
           if(answerArray[i] === this.state.answer[i]){
@@ -61,18 +65,25 @@ class NumberBaseball extends Component  {
           value: ''
         });
       }
+      //기존 inputRef focus방식
+      //this.onRefInput.focus();
+      this.onRefInput.current.focus();
     }
 
   };
+  //기존 Ref
+  //장점으로는 미세한  Ref 컨트롤이 가능하다.
+  // input;
+  // onRefInput = (c) => {
+  //   console.log(this.state.answer);
+  //   this.input= c;
+  // };
 
-  input;
-  onRefInput = (c) => {
-    console.log(this.state.answer);
-    this.input= c;
-  };
+  //createRed 사용법
+  onRefInput = createRef();
 
   onChangeInput = (e) => {
-    
+    console.log(this.state.answer)
     this.setState({
       value: e.target.value
     })
@@ -84,6 +95,7 @@ class NumberBaseball extends Component  {
         <h1>{this.state.result}</h1>
         <form onSubmit={this.onSubmitForm}>
           <input ref={this.onRefInput} maxLength={4} value={this.state.value} onChange={this.onChangeInput} />
+          <button>입력!</button>
         </form>
         <div>시도: {this.state.tries.length}</div>
         <ul >
