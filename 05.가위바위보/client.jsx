@@ -1,7 +1,7 @@
 import React from'react';
 import ReactDOM from'react-dom/client';
 
-import RCP from './RCP.jsx';
+import RCP from './RCP-kustomhook.jsx';
 
 
 //ReactDOM.render(<NumberBaseball />, document.querySelector('#root'));
