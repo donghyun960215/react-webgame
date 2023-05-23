@@ -46,31 +46,34 @@ const RSP = () => {
   }
 
   const onClickBtn = (choice) => () => {
-    clearInterval(interval);
-    const myScore = scores[choice];
-    const cpuScore = scores[comuterChoice(imgCoord)];
-    const diff =  myScore - cpuScore;
-    if(diff === 0 ){
-      setResult('비겼습니다.');
-      setFullCount((prevFullCount) => prevFullCount - 1);
-    }else if([-1,2].includes(diff)){
-      setResult('이겼습니다.');
-      setScore((prevScore) => prevScore + 1);
-      setFullCount((prevFullCount) => prevFullCount - 1);
-    }else {
-      setResult('졌습니다.');
-      setScore((prevScore) => prevScore - 1);
-      setFullCount((prevFullCount) => prevFullCount - 1);
+    if (interval.current) {
+      clearInterval(interval.current);
+      interval.current = null;
+      const myScore = scores[choice];
+      const cpuScore = scores[comuterChoice(imgCoord)];
+      const diff =  myScore - cpuScore;
+        if(diff === 0 ){
+          setResult('비겼습니다.');
+          setFullCount((prevFullCount) => prevFullCount - 1);
+        }else if([-1,2].includes(diff)){
+          setResult('이겼습니다.');
+          setScore((prevScore) => prevScore + 1);
+          setFullCount((prevFullCount) => prevFullCount - 1);
+        }else {
+          setResult('졌습니다.');
+          setScore((prevScore) => prevScore - 1);
+          setFullCount((prevFullCount) => prevFullCount - 1);
+        }
+        if(fullCount === 0) {
+          setResult('');
+          setScore(0);
+          setFullCount(10);
+          alert(`총 점수는 ${score}점 입니다.`);
+        }
+        setTimeout(() => {
+          interval.current = setInterval(changHand,100);
+        },1500)
     }
-    if(fullCount === 0) {
-      setResult('');
-      setScore(0);
-      setFullCount(10);
-      alert(`총 점수는 ${score}점 입니다.`);
-    }
-    setTimeout(() => {
-      interval.current = setInterval(changHand,100);
-    },1500)
   };
 
   return(
