@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect}from "react";
+import React, {Component}from "react";
 import Ball from "./Ball";
 
 function getWinNumbers() {
@@ -13,37 +13,7 @@ function getWinNumbers() {
   return [...winNumbers, bonusNumber];
 }
 
-
-const Lotto = () => {
-  const {winNumbers, setWinNumbers} = useState(getWinNumbers());
-  const {winBalls, setWinBalls} = useState([]);
-  const {bouns, setBouns} = useState(null);
-  const {redo, setRedo} = useState(false);
-  const timeouts = useRef([]);
-
-  const onClickRedo = () => {
-    setWinNumbers(getWinNumbers());
-    setWinBalls([]);
-    setBouns(null);
-    setRedo(false);
-    timeouts.current = [];
-  };
-
-  return(
-    <>
-      <div>당첨숫자</div>
-      <div id="결과창">
-        {winBalls.map((v) => <Ball key={v} number={v}/>)}
-      </div>
-      <div>보너스!</div>
-      {bouns && <Ball number={bouns}/>}
-      <br />
-      {redo && <button onClick={onClickRedo}>한 번 더!</button>}
-    </>
-  );
-};
-
-class Lotsto extends Component {
+class Lotto extends Component {
 state = {
   winNumbers: getWinNumbers(),  //당첨 숫자들
   winBalls: [],
