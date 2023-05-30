@@ -17,7 +17,7 @@ function getWinNumbers() {
 const Lotto = () => {
   const {winNumbers, setWinNumbers} = useState(getWinNumbers());
   const {winBalls, setWinBalls} = useState([]);
-  const {bouns, setBouns} = useState(null);
+  const {bonus, setBonus} = useState(null);
   const {redo, setRedo} = useState(false);
   const timeouts = useRef([]);
 
@@ -29,7 +29,7 @@ const Lotto = () => {
       }, (i + 1) * 1000);
     }
     timeouts.current[6] = setTimeout(() => {
-      setBouns(winNumbers[6]);
+      setBonus(winNumbers[6]);
       setRedo(true);
     }, 7000);
     return () => {          //componentWillUnmount 역할 수행
@@ -43,7 +43,7 @@ const Lotto = () => {
   const onClickRedo = () => {
     setWinNumbers(getWinNumbers());
     setWinBalls([]);
-    setBouns(null);
+    setBonus(null);
     setRedo(false);
     timeouts.current = [];
   };
@@ -55,7 +55,7 @@ const Lotto = () => {
         {winBalls.map((v) => <Ball key={v} number={v}/>)}
       </div>
       <div>보너스!</div>
-      {bouns && <Ball number={bouns}/>}
+      {bonus && <Ball number={bonus}/>}
       <br />
       {redo && <button onClick={onClickRedo}>한 번 더!</button>}
     </>
