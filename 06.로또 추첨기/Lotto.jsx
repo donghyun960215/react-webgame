@@ -16,15 +16,34 @@ function getWinNumbers() {
 
 const Lotto = () => {
   const {winNumbers, setWinNumbers} = useState(getWinNumbers());
-  const {winBalls, setWinBalls} = useState([]);
-  const {bouns, setBouns} = useState(null);
+  const {winBalls, setWinBalls} = useState();
+  const {bonus, setBonus} = useState(null);
   const {redo, setRedo} = useState(false);
   const timeouts = useRef([]);
+
+  useEffect(() => {
+    console.log('으아아아3');
+    for(let i = 0; i < winNumbers.length - 1; i++) {
+      timeouts.current[i] = setTimeout(() => {
+        setWinBalls((prevBalls) => [...prevBalls, winNumbers[i]]);
+      }, (i + 1) * 1000);
+    }
+    timeouts.current[6] = setTimeout(() => {
+      setBonus(winNumbers[6]);
+      setRedo(true);
+    }, 7000);
+    return () => {          //componentWillUnmount 역할 수행
+      timeouts.current.forEach((v) => {
+        clearTimeout(v);
+      });
+    };
+  },[timeouts.current]);  //빈 배열이면  componentDidMount와 동일
+                          //배열에 요소가 있으면  componentDidMount랑 componentDidupdate 둘 다 수행
 
   const onClickRedo = () => {
     setWinNumbers(getWinNumbers());
     setWinBalls([]);
-    setBouns(null);
+    setBonus(null);
     setRedo(false);
     timeouts.current = [];
   };
@@ -36,83 +55,10 @@ const Lotto = () => {
         {winBalls.map((v) => <Ball key={v} number={v}/>)}
       </div>
       <div>보너스!</div>
-      {bouns && <Ball number={bouns}/>}
+      {bonus && <Ball number={bonus}/>}
       <br />
       {redo && <button onClick={onClickRedo}>한 번 더!</button>}
     </>
   );
 };
-
-class Lotsto extends Component {
-state = {
-  winNumbers: getWinNumbers(),  //당첨 숫자들
-  winBalls: [],
-  bouns: null,  //보너스공
-  redo: false,
-};
-
-timeouts = [];
-
-runTimeouts = () => {     //중복으로 사용하므로 함수로 빼준다.
-  const {winNumbers} = this.state;
-  for(let i = 0; i < this.state.winNumbers.length - 1; i++) {
-    this.timeouts[i] = setTimeout(() => {
-      this.setState((prevState) => {
-        return {
-          winBalls: [...prevState.winBalls, winNumbers[i]],
-        };
-      });
-    }, (i + 1) * 1000);
-  }
-  this.timeouts[6] = setTimeout(() => {
-    this.setState({
-      bouns: winNumbers[6],
-      redo: true
-    });
-  }, 7000)
-};
-
-componentDidMount() {
-  this.runTimeouts();
-}
-
-componentDidUpdate(prevProps, prevState) {
-  if(this.state.winBalls.length === 0) {
-    this.runTimeouts();
-  }
-}
-
-componentWillUnmount(){
-  this.timeouts.forEach((v) => {
-    clearTimeout(v);
-  });
-}
-onClickRedo = () => {
-  this.setState ({
-    winNumbers: getWinNumbers(),  //당첨 숫자들
-    winBalls: [],
-    bouns: null,  //보너스공
-    redo: false,
-  });
-  this.timeouts = [];
-};
-
-render() {
-  const {winBalls, bouns, redo} = this.state;
-  return(
-    <>
-      <div>당첨숫자</div>
-      <div id="결과창">
-        {winBalls.map((v) => <Ball key={v} number={v}/>)}
-      </div>
-      <div>보너스!</div>
-      {bouns && <Ball number={bouns}/>}
-      <br />
-      {redo && <button onClick={this.onClickRedo}>한 번 더!</button>}
-    </>
-  );
-
-}
-
-}
 export default Lotto;
