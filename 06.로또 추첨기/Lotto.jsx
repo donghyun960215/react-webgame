@@ -16,7 +16,7 @@ function getWinNumbers() {
 
 const Lotto = () => {
   const {winNumbers, setWinNumbers} = useState(getWinNumbers());
-  const {winBalls, setWinBalls} = useState();
+  const {winBalls, setWinBalls} = useState([]);
   const {bonus, setBonus} = useState(null);
   const {redo, setRedo} = useState(false);
   const timeouts = useRef([]);
